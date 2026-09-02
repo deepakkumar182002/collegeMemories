@@ -19,6 +19,8 @@ import { StickyNote } from '../../components/common/StickyNote';
 import { Tape } from '../../components/common/Tape';
 import { Doodle } from '../../components/common/Doodle';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import { ReactionPicker } from '../../components/common/ReactionPicker';
+import { CommentSection } from '../../components/common/CommentSection';
 import { gsap, ScrollTrigger } from '../../lib/gsap';
 import { formatMediaUrl } from '../../lib/utils';
 import { Chapter, Memory } from '../../types';
@@ -38,6 +40,7 @@ export const HomePage: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [selectedStyle, setSelectedStyle] = useState<'yellow' | 'pink' | 'purple' | 'blue' | 'green' | 'orange'>('yellow');
   const [selectedEmoji, setSelectedEmoji] = useState('💌');
+  const [openCommentChapterId, setOpenCommentChapterId] = useState<string | null>(null);
 
   const timelineContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -257,6 +260,37 @@ export const HomePage: React.FC = () => {
                   <p className="font-body text-base text-on-surface-variant max-w-lg mb-4 leading-relaxed font-normal">
                     {chapter.shortDescription || chapter.fullDescription}
                   </p>
+
+                  {/* Chapter Interactive Reactions & Like Bar */}
+                  <div className="mb-4 max-w-lg">
+                    <ReactionPicker
+                      targetType="chapter"
+                      targetId={chapter._id}
+                      targetTitle={chapter.title}
+                      initialReactions={chapter.reactions || {}}
+                      initialLikes={chapter.likesCount || 0}
+                      onToggleComments={() =>
+                        setOpenCommentChapterId(openCommentChapterId === chapter._id ? null : chapter._id)
+                      }
+                      compact={true}
+                    />
+                  </div>
+
+                  {/* Expandable Chapter Comments Drawer */}
+                  {openCommentChapterId === chapter._id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mb-4 max-w-lg overflow-hidden text-left"
+                    >
+                      <CommentSection
+                        targetType="chapter"
+                        targetId={chapter._id}
+                        targetTitle={chapter.title}
+                      />
+                    </motion.div>
+                  )}
 
                   <Link
                     to={`/gallery?chapter=${chapter.slug}`}

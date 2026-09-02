@@ -16,11 +16,25 @@
     --surface-container-high: #eae8e4;
   }
 
+  .dark {
+    --background: #0f1013;
+    --foreground: #f3f0e8;
+    --primary: #e11d48;
+    --primary-foreground: #ffffff;
+    --secondary: #94a3b8;
+    --secondary-foreground: #0f1013;
+    --tertiary: #fde047;
+    --outline: #71717a;
+    --outline-variant: #3f3f46;
+    --surface-container-high: #1c1d22;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Custom Smooth Scrollbar */
@@ -33,13 +47,25 @@
     background: #f5f3ef;
   }
 
+  .dark ::-webkit-scrollbar-track {
+    background: #18181b;
+  }
+
   ::-webkit-scrollbar-thumb {
     background: #8e706c88;
     border-radius: 4px;
   }
 
+  .dark ::-webkit-scrollbar-thumb {
+    background: #52525b;
+  }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #570000;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #e11d48;
   }
 }
 
@@ -49,6 +75,11 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
+.dark .paper-texture {
+  background-color: #0f1013;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
 .notebook-grid {
   background-size: 24px 24px;
   background-image: 
@@ -56,9 +87,19 @@
     linear-gradient(to bottom, rgba(142, 112, 108, 0.08) 1px, transparent 1px);
 }
 
+.dark .notebook-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
 .notebook-lines {
   background-size: 100% 32px;
   background-image: linear-gradient(to bottom, transparent 31px, rgba(142, 112, 108, 0.15) 32px);
+}
+
+.dark .notebook-lines {
+  background-image: linear-gradient(to bottom, transparent 31px, rgba(255, 255, 255, 0.07) 32px);
 }
 
 /* Polaroid Card Frame */
@@ -67,15 +108,25 @@
   padding: 12px 12px 48px 12px;
   border-radius: 2px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease, background-color 0.3s ease;
   position: relative;
   user-select: none;
+}
+
+.dark .polaroid {
+  background: #18191e;
+  border: 1px solid #27272a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .polaroid:hover {
   transform: scale(1.04) rotate(0deg) !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
   z-index: 30 !important;
+}
+
+.dark .polaroid:hover {
+  box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
 }
 
 .polaroid::after {
@@ -85,6 +136,10 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.03) 100%);
   pointer-events: none;
   border-radius: 2px;
+}
+
+.dark .polaroid::after {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
 }
 
 /* Washi Tape Strips */
@@ -97,6 +152,11 @@
   backdrop-filter: blur(2px);
   z-index: 10;
   pointer-events: none;
+}
+
+.dark .tape {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tape::before {
@@ -137,6 +197,11 @@
   transition: transform 0.35s ease;
 }
 
+.dark .film-frame {
+  background: #090a0c;
+  border: 1px solid #27272a;
+}
+
 .film-frame:hover {
   transform: scale(1.03);
 }
@@ -153,6 +218,11 @@
   background-position: center;
 }
 
+.dark .film-perforations-top,
+.dark .film-perforations-bottom {
+  background-image: radial-gradient(circle, #18191e 4px, transparent 4px);
+}
+
 .film-perforations-top {
   top: 3px;
 }
@@ -167,14 +237,24 @@
   border: 1px solid #eae8e4;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, background-color 0.3s ease;
   overflow: hidden;
   position: relative;
+}
+
+.dark .college-id-card {
+  background: #18191e;
+  border: 1px solid #27272a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .college-id-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.14);
+}
+
+.dark .college-id-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Glassmorphic Panels */
@@ -186,12 +266,28 @@
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
 }
 
+.dark .glass-panel {
+  background: rgba(24, 25, 30, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+}
+
 .glass-dock {
   background: rgba(251, 249, 245, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 191, 185, 0.4);
   box-shadow: 0 10px 30px -5px rgba(87, 0, 0, 0.08);
+}
+
+.dark .glass-dock {
+  background: rgba(18, 19, 23, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45);
 }
 
 /* Continuous Timeline Line */
@@ -218,3 +314,54 @@
 .font-handwriting {
   font-family: 'Caveat', cursive;
 }
+
+/* Fairy Lights & Lantern Keyframe Animations */
+@keyframes fairyBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.2);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+    filter: brightness(0.6);
+  }
+}
+
+.fairy-bulb {
+  animation: fairyBlink ease-in-out infinite alternate;
+}
+
+@keyframes lampSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(4deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes lampSwayDelayed {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+.lamp-sway {
+  animation: lampSway 6s ease-in-out infinite;
+}
+
+.lamp-sway-delayed {
+  animation: lampSwayDelayed 6.5s ease-in-out infinite;
+}
+

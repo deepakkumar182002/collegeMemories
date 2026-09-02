@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Sparkles, Menu, X, Shield, BookOpen, Image, Video, Users, MessageSquare } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useSiteSettings } from '../../hooks/useData';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,7 +37,7 @@ export const Navbar: React.FC = () => {
         }`}
       >
         <div className="max-w-container-max mx-auto px-4 md:px-gutter">
-          <nav className="glass-dock rounded-full px-5 md:px-8 py-3 flex items-center justify-between shadow-lg">
+          <nav className="glass-dock rounded-full px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center justify-between shadow-lg">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
               <span className="text-2xl transform group-hover:rotate-12 transition-transform duration-300">🎓</span>
@@ -46,7 +47,7 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-7">
+            <div className="hidden md:flex items-center gap-6 lg:gap-7">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.href;
                 return (
@@ -66,14 +67,17 @@ export const Navbar: React.FC = () => {
               })}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons & Theme Switch */}
             <div className="hidden md:flex items-center gap-3">
+              {/* Theme Toggle Button */}
+              <ThemeToggle size="sm" />
+
               <a
                 href="#memory-wall"
-                className="bg-primary text-on-primary px-5 py-2 rounded-full font-montserrat text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-primary-container transition-all transform hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                className="bg-primary text-on-primary px-4 py-2 rounded-full font-montserrat text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-primary-container transition-all transform hover:scale-105 active:scale-95 flex items-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                Relive Memories
+                Relive
               </a>
 
               {isAuthenticated ? (
@@ -95,14 +99,17 @@ export const Navbar: React.FC = () => {
               )}
             </div>
 
-            {/* Mobile Hamburger */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-primary focus:outline-none"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Mobile Header Right */}
+            <div className="flex md:hidden items-center gap-2">
+              <ThemeToggle size="sm" />
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-primary focus:outline-none"
+                aria-label="Toggle navigation menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </nav>
         </div>
       </header>
@@ -138,6 +145,11 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div className="pt-6 border-t border-outline-variant/30 space-y-3">
+              <div className="flex items-center justify-between p-2 rounded-xl bg-surface-container">
+                <span className="text-xs font-semibold text-on-surface">Appearance</span>
+                <ThemeToggle size="sm" />
+              </div>
+
               <a
                 href="#memory-wall"
                 onClick={() => setMobileMenuOpen(false)}

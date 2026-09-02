@@ -5,6 +5,8 @@ import { useMemory } from '../../hooks/useData';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { formatMediaUrl } from '../../lib/utils';
 import { Tape } from '../../components/common/Tape';
+import { ReactionPicker } from '../../components/common/ReactionPicker';
+import { CommentSection } from '../../components/common/CommentSection';
 import { toast } from 'sonner';
 
 export const MemoryDetailPage: React.FC = () => {
@@ -67,7 +69,7 @@ export const MemoryDetailPage: React.FC = () => {
       </div>
 
       {/* Main Memory Scrapbook Card */}
-      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/40 relative">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/40 dark:border-slate-800 relative">
         <Tape className="-top-3 left-12 w-28 h-6 opacity-70" rotation={-1} />
 
         {/* Media Container */}
@@ -94,56 +96,77 @@ export const MemoryDetailPage: React.FC = () => {
         </div>
 
         {/* Details & Notes */}
-        <div className="p-6 md:p-10 bg-surface relative">
+        <div className="p-6 md:p-10 bg-surface dark:bg-slate-900 relative">
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-3 py-1 rounded-full text-xs font-montserrat font-bold uppercase tracking-widest bg-primary-fixed text-primary">
+            <span className="px-3 py-1 rounded-full text-xs font-montserrat font-bold uppercase tracking-widest bg-primary-fixed dark:bg-rose-950/60 text-primary dark:text-rose-300">
               {chapterTitle}
             </span>
             {memory.emoji && <span className="text-2xl">{memory.emoji}</span>}
           </div>
 
-          <h1 className="font-headline text-3xl md:text-4xl font-extrabold text-primary mb-3">
+          <h1 className="font-headline text-3xl md:text-4xl font-extrabold text-primary dark:text-rose-400 mb-3">
             {memory.title}
           </h1>
 
           {memory.caption && (
-            <p className="font-handwriting text-2xl md:text-3xl text-on-surface-variant font-medium -rotate-1 mb-6">
+            <p className="font-handwriting text-2xl md:text-3xl text-on-surface-variant dark:text-slate-300 font-medium -rotate-1 mb-6">
               “{memory.caption}”
             </p>
           )}
 
           {memory.description && (
-            <p className="text-on-surface/90 text-base leading-relaxed mb-8 font-body">
+            <p className="text-on-surface/90 dark:text-slate-300 text-base leading-relaxed mb-6 font-body">
               {memory.description}
             </p>
           )}
 
+          {/* Reactions & Like Picker */}
+          <div className="mb-6 max-w-xl">
+            <ReactionPicker
+              targetType="memory"
+              targetId={memory._id}
+              targetTitle={memory.title}
+              initialReactions={memory.reactions || {}}
+              initialLikes={memory.likesCount || 0}
+              showCommentsButton={false}
+            />
+          </div>
+
           {/* Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-outline-variant/40 text-xs font-medium text-on-surface-variant">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-outline-variant/40 dark:border-slate-800 text-xs font-medium text-on-surface-variant dark:text-slate-400">
             {memory.memoryDate && (
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-primary" />
+                <Calendar className="w-4 h-4 text-primary dark:text-rose-400" />
                 <span>{memory.memoryDate} ({memory.year})</span>
               </div>
             )}
             {memory.location && (
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
+                <MapPin className="w-4 h-4 text-primary dark:text-rose-400" />
                 <span>{memory.location}</span>
               </div>
             )}
             {memory.people && memory.people.length > 0 && (
               <div className="sm:col-span-2 flex items-start gap-2">
-                <Users className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <Users className="w-4 h-4 text-primary dark:text-rose-400 shrink-0 mt-0.5" />
                 <div className="flex flex-wrap gap-1">
                   {memory.people.map((person, idx) => (
-                    <span key={idx} className="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px]">
+                    <span key={idx} className="bg-secondary-container dark:bg-slate-800 text-on-secondary-container dark:text-slate-200 px-2 py-0.5 rounded text-[11px]">
                       {person}
                     </span>
                   ))}
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Memory Comments Section */}
+          <div className="mt-8 pt-8 border-t border-outline-variant/40 dark:border-slate-800">
+            <CommentSection
+              targetType="memory"
+              targetId={memory._id}
+              targetTitle={memory.title}
+            />
           </div>
         </div>
 

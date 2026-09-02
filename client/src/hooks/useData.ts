@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { chaptersApi, memoriesApi, friendsApi, messagesApi, settingsApi } from '../api';
+import { chaptersApi, memoriesApi, friendsApi, messagesApi, settingsApi, interactionsApi } from '../api';
 import { toast } from 'sonner';
 
 // Chapters Hooks
@@ -82,3 +82,65 @@ export function useSiteSettings() {
     queryFn: settingsApi.get,
   });
 }
+
+// Interaction Hooks (Reactions & Comments)
+export function useComments(targetType: 'chapter' | 'memory', targetId: string) {
+  return useQuery({
+    queryKey: ['comments', targetType, targetId],
+    queryFn: () => interactionsApi.getComments(targetType, targetId),
+    enabled: !!targetId,
+  });
+}
+
+export function useInteractionStats(targetType: 'chapter' | 'memory', targetId: string) {
+  return useQuery({
+    queryKey: ['interactionStats', targetType, targetId],
+    queryFn: () => interactionsApi.getStats(targetType, targetId),
+    enabled: !!targetId,
+  });
+}
+
+export function useReactMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: interactionsApi.react,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['interactionStats', variables.targetType, variables.targetId] });
+      if (variables.targetType === 'chapter') {
+        queryClient.invalidateQueries({ queryKey: ['chapters'] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['memories'] });
+      }
+    },
+    onError: () => {
+      // Quiet fail so user flow isn't interrupted
+    },
+  });
+}
+
+export function useAddCommentMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: interactionsApi.addComment,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['comments', variables.targetType, variables.targetId] });
+      queryClient.invalidateQueries({ queryKey: ['interactionStats', variables.targetType, variables.targetId] });
+      toast.success('Your memory note has been posted! 💬');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Failed to post comment.');
+    },
+  });
+}
+
+export function useDeleteCommentMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: interactionsApi.deleteComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+      toast.success('Comment deleted successfully.');
+    },
+  });
+}
+

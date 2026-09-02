@@ -13,6 +13,7 @@ import memoriesRoutes from './routes/memories.routes.js';
 import friendsRoutes from './routes/friends.routes.js';
 import messagesRoutes from './routes/messages.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
+import interactionRoutes from './routes/interaction.routes.js';
 import { notFound, errorHandler } from './middleware/error.middleware.js';
 
 const app = express();
@@ -35,6 +36,7 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'https://college-memory.vercel.app',
+  'https://memories-ochre-ten.vercel.app',
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
@@ -129,6 +131,7 @@ app.use('/api/memories', memoriesRoutes);
 app.use('/api/friends', friendsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/interactions', interactionRoutes);
 
 // Error Handling
 app.use(notFound);

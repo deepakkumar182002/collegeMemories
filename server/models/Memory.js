@@ -93,6 +93,15 @@ const memorySchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    reactions: {
+      type: Map,
+      of: Number,
+      default: () => ({ '❤️': 0, '🔥': 0, '🥹': 0, '🎓': 0, '😂': 0, '👏': 0, '🥳': 0 }),
+    },
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

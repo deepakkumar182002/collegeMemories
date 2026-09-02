@@ -54,6 +54,8 @@ export interface Chapter {
   layoutStyle?: ChapterLayoutStyle;
   displayOrder: number;
   isPublished: boolean;
+  reactions?: Record<string, number>;
+  likesCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -77,8 +79,32 @@ export interface Memory {
   displayOrder: number;
   isFeatured: boolean;
   isPublished: boolean;
+  reactions?: Record<string, number>;
+  likesCount?: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface AlumniComment {
+  _id: string;
+  targetType: 'chapter' | 'memory';
+  targetId: string;
+  authorName: string;
+  authorAvatar: string;
+  content: string;
+  likesCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type Comment = AlumniComment;
+
+export interface ReactionStats {
+  targetId: string;
+  targetType: 'chapter' | 'memory';
+  reactions: Record<string, number>;
+  likesCount: number;
+  commentCount: number;
 }
 
 export interface Friend {
@@ -148,3 +174,4 @@ export interface ApiResponse<T = any> {
   data: T;
   errors?: any;
 }
+

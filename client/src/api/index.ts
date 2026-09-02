@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { Chapter, Memory, Friend, Message, SiteSettings, Admin, ApiResponse } from '../types';
+import { Chapter, Memory, Friend, Message, SiteSettings, Admin, ApiResponse, AlumniComment, ReactionStats } from '../types';
 
 // Auth API
 export const authApi = {
@@ -165,3 +165,39 @@ export const settingsApi = {
     return res.data.data.settings;
   },
 };
+
+// Interactions (Reactions & Comments) API
+export const interactionsApi = {
+  react: async (payload: {
+    targetType: 'chapter' | 'memory';
+    targetId: string;
+    emoji?: string;
+    type?: 'reaction' | 'like';
+  }) => {
+    const res = await apiClient.post<ApiResponse<{ targetId: string; targetType: string; reactions: Record<string, number>; likesCount: number }>>('/interactions/react', payload);
+    return res.data.data;
+  },
+  addComment: async (payload: {
+    targetType: 'chapter' | 'memory';
+    targetId: string;
+    authorName: string;
+    authorAvatar?: string;
+    content: string;
+  }) => {
+    const res = await apiClient.post<ApiResponse<{ comment: AlumniComment }>>('/interactions/comments', payload);
+    return res.data.data.comment;
+  },
+  getComments: async (targetType: 'chapter' | 'memory', targetId: string) => {
+    const res = await apiClient.get<ApiResponse<{ comments: AlumniComment[]; count: number }>>(`/interactions/comments/${targetType}/${targetId}`);
+    return res.data.data.comments;
+  },
+  getStats: async (targetType: 'chapter' | 'memory', targetId: string) => {
+    const res = await apiClient.get<ApiResponse<ReactionStats>>(`/interactions/stats/${targetType}/${targetId}`);
+    return res.data.data;
+  },
+  deleteComment: async (id: string) => {
+    const res = await apiClient.delete<ApiResponse<null>>(`/interactions/comments/${id}`);
+    return res.data;
+  },
+};
+

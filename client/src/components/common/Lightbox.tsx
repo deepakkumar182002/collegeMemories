@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Calendar, MapPin, Tag, Users, Film, Maximize2 } from 'lucide-react';
 import { useLightbox } from '../../context/LightboxContext';
 import { formatMediaUrl } from '../../lib/utils';
 import { Tape } from './Tape';
+import { ReactionPicker } from './ReactionPicker';
+import { CommentSection } from './CommentSection';
 
 export const Lightbox: React.FC = () => {
   const { activeMemory, closeLightbox, nextMemory, prevMemory, memoriesList } = useLightbox();
+  const [showComments, setShowComments] = useState(false);
 
   if (!activeMemory) return null;
 
@@ -70,7 +73,7 @@ export const Lightbox: React.FC = () => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.92, opacity: 0, y: 15 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="relative z-10 w-full max-w-5xl max-h-[92vh] bg-surface rounded-xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-outline-variant/40"
+          className="relative z-10 w-full max-w-5xl max-h-[92vh] bg-surface dark:bg-slate-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-outline-variant/40 dark:border-slate-800"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Media Column */}
@@ -98,60 +101,84 @@ export const Lightbox: React.FC = () => {
           </div>
 
           {/* Details Scrapbook Column */}
-          <div className="w-full md:w-2/5 p-6 md:p-8 flex flex-col justify-between overflow-y-auto max-h-[40vh] md:max-h-[85vh] bg-[#fbf9f5] relative">
+          <div className="w-full md:w-2/5 p-6 md:p-8 flex flex-col justify-between overflow-y-auto max-h-[40vh] md:max-h-[85vh] bg-[#fbf9f5] dark:bg-slate-900 relative text-on-surface">
             <Tape className="-top-3 right-6 w-20 h-6 opacity-60" rotation={2} />
 
-            <div>
+            <div className="space-y-4">
               {/* Chapter Tag */}
-              <div className="flex items-center gap-2 mb-3">
-                <span className="px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary-fixed text-primary border border-primary/20">
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-primary-fixed dark:bg-rose-950/60 text-primary dark:text-rose-300 border border-primary/20 dark:border-rose-800">
                   {chapterTitle}
                 </span>
                 {activeMemory.emoji && <span className="text-xl">{activeMemory.emoji}</span>}
               </div>
 
               {/* Title */}
-              <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary mb-2 leading-tight">
+              <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary dark:text-rose-400 leading-tight">
                 {activeMemory.title}
               </h2>
 
               {/* Handwritten Caption */}
               {activeMemory.caption && (
-                <p className="font-handwriting text-xl md:text-2xl text-on-surface-variant font-medium -rotate-1 mb-4">
+                <p className="font-handwriting text-xl md:text-2xl text-on-surface-variant dark:text-slate-300 font-medium -rotate-1">
                   “{activeMemory.caption}”
                 </p>
               )}
 
               {/* Full Description */}
               {activeMemory.description && (
-                <p className="text-on-surface/90 text-sm md:text-base leading-relaxed mb-6 font-body">
+                <p className="text-on-surface/90 dark:text-slate-300 text-sm leading-relaxed font-body">
                   {activeMemory.description}
                 </p>
+              )}
+
+              {/* Interactive Reaction Picker */}
+              <div className="pt-2">
+                <ReactionPicker
+                  targetType="memory"
+                  targetId={activeMemory._id}
+                  targetTitle={activeMemory.title}
+                  initialReactions={activeMemory.reactions || {}}
+                  initialLikes={activeMemory.likesCount || 0}
+                  onToggleComments={() => setShowComments(!showComments)}
+                  compact={true}
+                />
+              </div>
+
+              {/* Comments Accordion */}
+              {showComments && (
+                <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+                  <CommentSection
+                    targetType="memory"
+                    targetId={activeMemory._id}
+                    targetTitle={activeMemory.title}
+                  />
+                </div>
               )}
             </div>
 
             {/* Metadata Footer */}
-            <div className="border-t border-outline-variant/40 pt-4 space-y-2.5 text-xs text-on-surface-variant font-medium">
+            <div className="border-t border-outline-variant/40 dark:border-slate-800 pt-4 mt-6 space-y-2.5 text-xs text-on-surface-variant dark:text-slate-400 font-medium">
               {activeMemory.memoryDate && (
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-primary" />
+                  <Calendar className="w-4 h-4 text-primary dark:text-rose-400" />
                   <span>{activeMemory.memoryDate}</span>
                 </div>
               )}
 
               {activeMemory.location && (
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-primary" />
+                  <MapPin className="w-4 h-4 text-primary dark:text-rose-400" />
                   <span>{activeMemory.location}</span>
                 </div>
               )}
 
               {activeMemory.people && activeMemory.people.length > 0 && (
                 <div className="flex items-start gap-2">
-                  <Users className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <Users className="w-4 h-4 text-primary dark:text-rose-400 shrink-0 mt-0.5" />
                   <div className="flex flex-wrap gap-1">
                     {activeMemory.people.map((person, idx) => (
-                      <span key={idx} className="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px]">
+                      <span key={idx} className="bg-secondary-container dark:bg-slate-800 text-on-secondary-container dark:text-slate-200 px-2 py-0.5 rounded text-[11px]">
                         {person}
                       </span>
                     ))}
@@ -161,10 +188,10 @@ export const Lightbox: React.FC = () => {
 
               {activeMemory.tags && activeMemory.tags.length > 0 && (
                 <div className="flex items-start gap-2">
-                  <Tag className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <Tag className="w-4 h-4 text-primary dark:text-rose-400 shrink-0 mt-0.5" />
                   <div className="flex flex-wrap gap-1">
                     {activeMemory.tags.map((tag, idx) => (
-                      <span key={idx} className="text-primary font-semibold text-[11px]">
+                      <span key={idx} className="text-primary dark:text-rose-400 font-semibold text-[11px]">
                         #{tag}
                       </span>
                     ))}
@@ -178,3 +205,4 @@ export const Lightbox: React.FC = () => {
     </AnimatePresence>
   );
 };
+

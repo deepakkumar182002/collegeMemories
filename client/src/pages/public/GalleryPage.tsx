@@ -66,19 +66,19 @@ export const GalleryPage: React.FC = () => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-white p-5 md:p-6 rounded-2xl shadow-lg border border-outline-variant/40 mb-10 relative">
+      <div className="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl shadow-lg border border-outline-variant/40 dark:border-slate-800 mb-10 relative">
         <Tape className="-top-3 right-10 w-24 h-6 opacity-60" rotation={2} />
 
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Search Input */}
           <div className="relative w-full md:w-1/3">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant dark:text-slate-400" />
             <input
               type="text"
               placeholder="Search by title, location, tag, friend..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant/60 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium bg-surface"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant/60 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium bg-surface dark:bg-slate-800 text-slate-900 dark:text-slate-100"
             />
           </div>
 
@@ -95,7 +95,7 @@ export const GalleryPage: React.FC = () => {
                   setSearchParams({});
                 }
               }}
-              className="px-3.5 py-2.5 rounded-xl border border-outline-variant/60 bg-surface text-xs font-montserrat font-bold text-on-surface focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-3.5 py-2.5 rounded-xl border border-outline-variant/60 dark:border-slate-700 bg-surface dark:bg-slate-800 text-xs font-montserrat font-bold text-on-surface dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="">All Chapters</option>
               {chapters.map((ch) => (
@@ -109,7 +109,7 @@ export const GalleryPage: React.FC = () => {
             <select
               value={selectedMediaType}
               onChange={(e) => setSelectedMediaType(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl border border-outline-variant/60 bg-surface text-xs font-montserrat font-bold text-on-surface focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-3.5 py-2.5 rounded-xl border border-outline-variant/60 dark:border-slate-700 bg-surface dark:bg-slate-800 text-xs font-montserrat font-bold text-on-surface dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="all">All Media</option>
               <option value="image">📸 Photos & Polaroids</option>
@@ -121,7 +121,7 @@ export const GalleryPage: React.FC = () => {
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="px-3 py-2 text-xs font-montserrat font-bold text-primary hover:text-primary-container flex items-center gap-1 bg-surface-container rounded-xl transition-colors"
+                className="px-3 py-2 text-xs font-montserrat font-bold text-primary dark:text-rose-400 hover:text-primary-container flex items-center gap-1 bg-surface-container dark:bg-slate-800 rounded-xl transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
                 Clear
@@ -149,15 +149,15 @@ export const GalleryPage: React.FC = () => {
           })}
         </div>
       ) : (
-        <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-outline-variant p-8 max-w-lg mx-auto">
+        <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-outline-variant dark:border-slate-800 p-8 max-w-lg mx-auto">
           <p className="text-4xl mb-2">🔍</p>
-          <h3 className="font-headline text-xl font-bold text-primary mb-1">No Memories Found</h3>
-          <p className="text-sm text-on-surface-variant font-body mb-4">
+          <h3 className="font-headline text-xl font-bold text-primary dark:text-rose-400 mb-1">No Memories Found</h3>
+          <p className="text-sm text-on-surface-variant dark:text-slate-400 font-body mb-4">
             Try adjusting your search query or chapter filters.
           </p>
           <button
             onClick={clearFilters}
-            className="bg-primary text-white px-5 py-2 rounded-full font-montserrat text-xs font-bold uppercase"
+            className="bg-primary dark:bg-rose-700 text-white px-5 py-2 rounded-full font-montserrat text-xs font-bold uppercase"
           >
             Reset All Filters
           </button>

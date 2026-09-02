@@ -5,6 +5,8 @@ import { Footer } from '../common/Footer';
 import { WebGLPaperShader } from '../common/WebGLPaperShader';
 import { PaperTexture } from '../common/PaperTexture';
 import { Lightbox } from '../common/Lightbox';
+import { TorchCursor } from '../common/TorchCursor';
+import { FairyLights } from '../common/FairyLights';
 import { useLenis } from '../../hooks/useLenis';
 
 export const PublicLayout: React.FC = () => {
@@ -12,6 +14,12 @@ export const PublicLayout: React.FC = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between selection:bg-primary-container selection:text-on-primary-container">
+      {/* Dark Mode Interactive Torch Light Cursor */}
+      <TorchCursor />
+
+      {/* Dark Mode Hanging LED Jhalars & Ambient Lanterns */}
+      <FairyLights />
+
       {/* Dynamic Backgrounds */}
       <WebGLPaperShader />
       <PaperTexture />
