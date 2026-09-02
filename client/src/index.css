@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fbf9f5;
+    --foreground: #1b1c1a;
+    --primary: #570000;
+    --primary-foreground: #ffffff;
+    --secondary: #565e77;
+    --secondary-foreground: #ffffff;
+    --tertiary: #ffdf96;
+    --outline: #8e706c;
+    --outline-variant: #e2bfb9;
+    --surface-container-high: #eae8e4;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom Smooth Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f5f3ef;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #8e706c88;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #570000;
+  }
+}
+
+/* Tactile Scrapbook Paper Textures & Noise */
+.paper-texture {
+  background-color: #fbf9f5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.notebook-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(142, 112, 108, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(142, 112, 108, 0.08) 1px, transparent 1px);
+}
+
+.notebook-lines {
+  background-size: 100% 32px;
+  background-image: linear-gradient(to bottom, transparent 31px, rgba(142, 112, 108, 0.15) 32px);
+}
+
+/* Polaroid Card Frame */
+.polaroid {
+  background: #ffffff;
+  padding: 12px 12px 48px 12px;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease;
+  position: relative;
+  user-select: none;
+}
+
+.polaroid:hover {
+  transform: scale(1.04) rotate(0deg) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  z-index: 30 !important;
+}
+
+.polaroid::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.03) 100%);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Washi Tape Strips */
+.tape {
+  position: absolute;
+  width: 80px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tape::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.03),
+    rgba(0, 0, 0, 0.03) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+}
+
+/* Sticky Notes with Curled Shadows */
+.sticky-note {
+  position: relative;
+  padding: 20px;
+  border-radius: 2px 2px 14px 2px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sticky-note:hover {
+  transform: translateY(-4px) scale(1.02) rotate(0deg) !important;
+  box-shadow: 4px 12px 20px rgba(0, 0, 0, 0.16);
+  z-index: 20 !important;
+}
+
+/* Film Frame Styling */
+.film-frame {
+  background: #1b1c1a;
+  padding: 18px 12px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s ease;
+}
+
+.film-frame:hover {
+  transform: scale(1.03);
+}
+
+.film-perforations-top,
+.film-perforations-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-image: radial-gradient(circle, #fbf9f5 4px, transparent 4px);
+  background-size: 16px 12px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.film-perforations-top {
+  top: 3px;
+}
+
+.film-perforations-bottom {
+  bottom: 3px;
+}
+
+/* College ID Card */
+.college-id-card {
+  background: #ffffff;
+  border: 1px solid #eae8e4;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.college-id-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* Glassmorphic Panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+}
+
+.glass-dock {
+  background: rgba(251, 249, 245, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 191, 185, 0.4);
+  box-shadow: 0 10px 30px -5px rgba(87, 0, 0, 0.08);
+}
+
+/* Continuous Timeline Line */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-image: linear-gradient(to bottom, #8e706c 50%, transparent 50%);
+  background-size: 2px 20px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 28px;
+    transform: none;
+  }
+}
+
+/* Handwritten Font Helper */
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
