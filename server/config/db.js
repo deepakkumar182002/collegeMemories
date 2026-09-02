@@ -3,6 +3,11 @@ import mongoose from 'mongoose';
 let mongoMemoryServer = null;
 
 export const connectDB = async () => {
+  // If already connected, reuse connection (essential for Vercel / serverless)
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+
   try {
     const mongoUri = process.env.MONGODB_URI?.trim();
 
@@ -10,7 +15,7 @@ export const connectDB = async () => {
       try {
         console.log(`📡 Attempting connection to MongoDB at: ${mongoUri.replace(/:([^:@]{4})[^:@]*@/, ':****@')}`);
         const conn = await mongoose.connect(mongoUri, {
-          serverSelectionTimeoutMS: 4000,
+          serverSelectionTimeoutMS: 5000,
         });
         console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
         return conn;
@@ -33,6 +38,9 @@ export const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    if (process.env.NODE_ENV === 'production') {
+      throw error;
+    }
     process.exit(1);
   }
 };
